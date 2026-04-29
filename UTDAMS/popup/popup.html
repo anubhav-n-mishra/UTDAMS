@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UTDAMS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-logo">
+      <div class="logo-mark">U</div>
+      <div class="logo-text">
+        <span class="logo-name">UTDAMS</span>
+        <span class="logo-sub">Unified Detection Suite</span>
+      </div>
+    </div>
+    <div class="header-version">v1.0</div>
+  </header>
+
+  <!-- Feature Cards -->
+  <main class="features">
+
+    <!-- 1. Deepfake Video -->
+    <div class="feature-card" id="card-video">
+      <div class="feature-header" data-feature="deepfakeVideo">
+        <div class="feature-icon">🎬</div>
+        <div class="feature-info">
+          <div class="feature-name">Deepfake Video</div>
+          <div class="feature-desc" id="video-status">Scanning videos with Vision AI</div>
+        </div>
+        <label class="toggle" title="Toggle Deepfake Video">
+          <input type="checkbox" id="toggle-deepfakeVideo" />
+          <span class="toggle-track"></span>
+        </label>
+      </div>
+      <div class="feature-body" id="body-video">
+        <div class="stat-row">
+          <div class="stat-pill">
+            <span class="stat-n" id="vid-total">0</span>
+            <span class="stat-l">Videos</span>
+          </div>
+          <div class="stat-pill safe">
+            <span class="stat-n" id="vid-real">0</span>
+            <span class="stat-l">Authentic</span>
+          </div>
+          <div class="stat-pill danger">
+            <span class="stat-n" id="vid-fake">0</span>
+            <span class="stat-l">Deepfake</span>
+          </div>
+        </div>
+        <div class="result-list" id="video-results"></div>
+        <div class="action-row">
+          <button class="btn btn-secondary" id="btn-rescan">↺ Rescan</button>
+          <button class="btn btn-primary" id="btn-scan">⚡ Scan Now</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Phishing Email -->
+    <div class="feature-card" id="card-phishing">
+      <div class="feature-header" data-feature="phishing">
+        <div class="feature-icon">📧</div>
+        <div class="feature-info">
+          <div class="feature-name">Phishing Detection</div>
+          <div class="feature-desc">Gmail &amp; Outlook email guard</div>
+        </div>
+        <label class="toggle" title="Toggle Phishing Detection">
+          <input type="checkbox" id="toggle-phishing" />
+          <span class="toggle-track"></span>
+        </label>
+      </div>
+      <div class="feature-body" id="body-phishing">
+        <div class="config-row">
+          <label class="config-label">API URL</label>
+          <input class="config-input" id="phishing-api-url" type="text" placeholder="http://127.0.0.1:5000/predict" />
+        </div>
+        <button class="btn btn-secondary btn-full" id="btn-save-phishing">Save URL</button>
+        <p class="hint">Run your Flask phishing backend and open Gmail or Outlook.</p>
+      </div>
+    </div>
+
+    <!-- 3. Deepfake Audio -->
+    <div class="feature-card" id="card-audio">
+      <div class="feature-header" data-feature="deepfakeAudio">
+        <div class="feature-icon">🎤</div>
+        <div class="feature-info">
+          <div class="feature-name">Deepfake Audio</div>
+          <div class="feature-desc" id="audio-status-text">Backend offline</div>
+        </div>
+        <label class="toggle" title="Toggle Deepfake Audio">
+          <input type="checkbox" id="toggle-deepfakeAudio" />
+          <span class="toggle-track"></span>
+        </label>
+      </div>
+      <div class="feature-body" id="body-audio">
+        <!-- Meter ring -->
+        <div class="meter-wrap">
+          <div class="meter-ring">
+            <svg viewBox="0 0 100 100" class="meter-svg">
+              <defs>
+                <linearGradient id="audGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#7b9ec1"/>
+                  <stop offset="100%" stop-color="#c17b8a"/>
+                </linearGradient>
+              </defs>
+              <circle cx="50" cy="50" r="44" class="meter-bg"/>
+              <circle cx="50" cy="50" r="44" class="meter-fill" id="aud-meter-fill"/>
+            </svg>
+            <div class="meter-center">
+              <span class="meter-val" id="aud-meter-val">--</span>
+              <span class="meter-unit">%</span>
+            </div>
+          </div>
+          <div class="meter-label" id="aud-meter-label">IDLE</div>
+        </div>
+
+        <canvas id="aud-waveform" width="320" height="48" class="waveform"></canvas>
+
+        <div class="stat-row">
+          <div class="stat-pill">
+            <span class="stat-n" id="aud-conf">--%</span>
+            <span class="stat-l">Confidence</span>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-n" id="aud-latency">--ms</span>
+            <span class="stat-l">Latency</span>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-n" id="aud-chunks">0</span>
+            <span class="stat-l">Chunks</span>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-full" id="btn-audio-toggle">▶ Start Detection</button>
+        <p class="hint">Backend: <span id="aud-backend-url">localhost:8000</span>
+          <span class="backend-dot" id="aud-backend-dot"></span>
+        </p>
+      </div>
+    </div>
+
+    <!-- 4. AI Text Detector -->
+    <div class="feature-card" id="card-aitext">
+      <div class="feature-header" data-feature="aiText">
+        <div class="feature-icon">✍</div>
+        <div class="feature-info">
+          <div class="feature-name">AI Text Detector</div>
+          <div class="feature-desc">Detect AI-generated writing</div>
+        </div>
+        <label class="toggle" title="Toggle AI Text Detector">
+          <input type="checkbox" id="toggle-aiText" />
+          <span class="toggle-track"></span>
+        </label>
+      </div>
+      <div class="feature-body" id="body-aitext">
+        <div class="config-row">
+          <label class="config-label">Backend URL</label>
+          <input class="config-input" id="aitext-api-url" type="text" placeholder="http://127.0.0.1:5050/predict" />
+        </div>
+        <textarea class="text-input" id="aitext-input" placeholder="Paste text here to analyse…" rows="5"></textarea>
+        <button class="btn btn-primary btn-full" id="btn-analyse-text">Analyse Text</button>
+        <div class="aitext-result" id="aitext-result"></div>
+        <p class="hint">Run <code>python api.py</code> in the ai-written-detector folder first.</p>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <span>UTDAMS · All modules active</span>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>
